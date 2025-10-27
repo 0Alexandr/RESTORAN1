@@ -1,0 +1,165 @@
+<!-- Файл: MainWindow.axaml -->
+<!-- Полный XAML для главного окна приложения -->
+<!-- Содержит 5 вкладок: Столы, Бронирования, Меню (Блюда), Заказы, Статистика и Настройки -->
+<!-- Все элементы имеют имена (x:Name) для доступа из кода-behind -->
+<!-- Кнопки привязаны к обработчикам событий Click -->
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Restoran1.MainWindow"
+        Title="Restoran Manager"
+        Width="1200" Height="800"
+        WindowStartupLocation="CenterScreen"> <!-- Окно по центру экрана -->
+    
+    <!-- Основной контейнер — вкладки -->
+    <TabControl>
+        
+        <!-- ВКЛАДКА 1: Столы -->
+        <TabItem Header="Столы">
+            <StackPanel Margin="10" Spacing="10">
+                <!-- Панель с кнопками управления столами -->
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="Добавить стол" Click="AddTable_Click"/>
+                    <Button Content="Редактировать стол" Click="EditTable_Click"/>
+                    <Button Content="Удалить стол" Click="DeleteTable_Click"/>
+                    <Button Content="Показать информацию о столе" Click="ShowTableInfo_Click"/>
+                </StackPanel>
+                
+                <!-- Таблица со списком столов -->
+                <DataGrid x:Name="TablesGrid" 
+                          AutoGenerateColumns="False" 
+                          IsReadOnly="True" 
+                          Margin="0,10,0,0"
+                          GridLinesVisibility="All"
+                          SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="*"/>
+                        <DataGridTextColumn Header="Расположение" Binding="{Binding Location}" Width="2*"/>
+                        <DataGridTextColumn Header="Мест" Binding="{Binding Seats}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </TabItem>
+
+        <!-- ВКЛАДКА 2: Бронирования -->
+        <TabItem Header="Бронирования">
+            <StackPanel Margin="10" Spacing="10">
+                <!-- Панель кнопок для бронирований -->
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="Добавить бронирование" Click="AddReservation_Click"/>
+                    <Button Content="Редактировать бронирование" Click="EditReservation_Click"/>
+                    <Button Content="Отменить бронирование" Click="CancelReservation_Click"/>
+                    <Button Content="Найти по телефону/имени" Click="FindReservation_Click"/>
+                    <Button Content="Продлить/изменить бронь" Click="ExtendReservation_Click"/>
+                </StackPanel>
+                
+                <!-- Таблица бронирований -->
+                <DataGrid x:Name="ReservationsGrid" 
+                          AutoGenerateColumns="False" 
+                          IsReadOnly="True" 
+                          Margin="0,10,0,0"
+                          GridLinesVisibility="All">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="*"/>
+                        <DataGridTextColumn Header="Клиент ID" Binding="{Binding ClientId}" Width="*"/>
+                        <DataGridTextColumn Header="Стол" Binding="{Binding TableId}" Width="*"/>
+                        <DataGridTextColumn Header="Имя" Binding="{Binding ClientName}" Width="2*"/>
+                        <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" Width="1.5*"/>
+                        <DataGridTextColumn Header="Начало" Binding="{Binding Start, StringFormat=yyyy-MM-dd HH:mm}" Width="1.5*"/>
+                        <DataGridTextColumn Header="Конец" Binding="{Binding End, StringFormat=yyyy-MM-dd HH:mm}" Width="1.5*"/>
+                        <DataGridTextColumn Header="Комментарий" Binding="{Binding Comment}" Width="2*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </TabItem>
+
+        <!-- ВКЛАДКА 3: Меню (Блюда) -->
+        <TabItem Header="Меню (Блюда)">
+            <StackPanel Margin="10" Spacing="10">
+                <!-- Панель кнопок для блюд -->
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="Добавить блюдо" Click="AddDish_Click"/>
+                    <Button Content="Редактировать блюдо" Click="EditDish_Click"/>
+                    <Button Content="Удалить блюдо" Click="DeleteDish_Click"/>
+                </StackPanel>
+                
+                <!-- Таблица блюд -->
+                <DataGrid x:Name="DishesGrid" 
+                          AutoGenerateColumns="False" 
+                          IsReadOnly="True" 
+                          Margin="0,10,0,0"
+                          GridLinesVisibility="All">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="*"/>
+                        <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="2*"/>
+                        <DataGridTextColumn Header="Категория" Binding="{Binding Category}" Width="1.5*"/>
+                        <DataGridTextColumn Header="Цена" Binding="{Binding Price, StringFormat={}{0:0.00} руб.}" Width="*"/>
+                        <DataGridTextColumn Header="Состав" Binding="{Binding Composition}" Width="2*"/>
+                        <DataGridTextColumn Header="Вес" Binding="{Binding Weight}" Width="*"/>
+                        <DataGridTextColumn Header="Время готовки" Binding="{Binding CookTimeMinutes}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </TabItem>
+
+        <!-- ВКЛАДКА 4: Заказы -->
+        <TabItem Header="Заказы">
+            <StackPanel Margin="10" Spacing="10">
+                <!-- Панель кнопок для заказов -->
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="Создать заказ" Click="CreateOrder_Click"/>
+                    <Button Content="Редактировать заказ" Click="EditOrder_Click"/>
+                    <Button Content="Закрыть заказ" Click="CloseOrder_Click"/>
+                    <Button Content="Удалить заказ" Click="DeleteOrder_Click"/>
+                </StackPanel>
+                
+                <!-- Таблица заказов -->
+                <DataGrid x:Name="OrdersGrid" 
+                          AutoGenerateColumns="False" 
+                          IsReadOnly="True" 
+                          Margin="0,10,0,0"
+                          GridLinesVisibility="All">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="*"/>
+                        <DataGridTextColumn Header="Клиент ID" Binding="{Binding ClientId}" Width="*"/>
+                        <DataGridTextColumn Header="Стол" Binding="{Binding TableId}" Width="*"/>
+                        <DataGridTextColumn Header="Создан" Binding="{Binding CreatedAt, StringFormat=yyyy-MM-dd HH:mm}" Width="1.5*"/>
+                        <DataGridTextColumn Header="Закрыт" Binding="{Binding ClosedAt, StringFormat=yyyy-MM-dd HH:mm}" Width="1.5*"/>
+                        <DataGridTextColumn Header="Итого" Binding="{Binding Total, StringFormat={}{0:0.00} руб.}" Width="*"/>
+                        <DataGridTextColumn Header="Комментарий" Binding="{Binding Comment}" Width="2*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </TabItem>
+
+        <!-- ВКЛАДКА 5: Статистика и Настройки -->
+        <TabItem Header="Статистика и Настройки">
+            <StackPanel Margin="10" Spacing="10">
+                <!-- Кнопки статистики -->
+                <Button Content="Сумма закрытых заказов" Click="SumClosedOrders_Click"/>
+                <Button Content="Чек клиента" Click="PrintClientCheck_Click"/>
+                <Button Content="Статистика блюд" Click="StatsDishCounts_Click"/>
+                
+                <!-- Разделитель -->
+                <Separator Margin="0,10,0,10"/>
+                
+                <!-- Кнопки управления данными -->
+                <Button Content="Выбрать папку данных" Click="SetDataPath_Click"/>
+                <Button Content="Сохранить данные" Click="SaveData_Click"/>
+                <Button Content="Загрузить данные" Click="LoadData_Click"/>
+                <Button Content="Очистить все данные" Click="ClearAllData_Click"/>
+                <Button Content="Создать тестовые данные" Click="InitDefaults_Click"/>
+                
+                <!-- Разделитель -->
+                <Separator Margin="0,10,0,10"/>
+                
+                <!-- Управление виртуальным временем -->
+                <Button Content="Установить виртуальное время" Click="SetVirtualNow_Click"/>
+                <TextBlock x:Name="VirtualNowText" 
+                           Text="Текущее виртуальное время: " 
+                           FontWeight="Bold" 
+                           Margin="0,5,0,0"/>
+            </StackPanel>
+        </TabItem>
+
+    </TabControl>
+</Window>
